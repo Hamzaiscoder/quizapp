@@ -23,31 +23,6 @@ const quizData = [
         question: "How do you create a function in JavaScript?",
         options: ["function myFunction()", "def myFunction()", "function:myFunction()", "create function myFunction()"],
         answer: "function myFunction()"
-    },
-    {
-        question: "Which of the following is NOT a reserved word in JavaScript?",
-        options: ["interface", "throws", "program", "short"],
-        answer: "program"
-    },
-    {
-        question: "How do you call a function named 'myFunction'?",
-        options: ["call myFunction()", "call function myFunction()", "myFunction()", "Call.myFunction()"],
-        answer: "myFunction()"
-    },
-    {
-        question: "How do you write an array in JavaScript?",
-        options: ["var colors = 'red', 'green', 'blue'", "var colors = (1:'red', 2:'green', 3:'blue')", "var colors = ['red', 'green', 'blue']", "var colors = {red, green, blue}"],
-        answer: "var colors = ['red', 'green', 'blue']"
-    },
-    {
-        question: "Which event occurs when the user clicks on an HTML element?",
-        options: ["onchange", "onmouseclick", "onmouseover", "onclick"],
-        answer: "onclick"
-    },
-    {
-        question: "What will the following code output: console.log(typeof []);",
-        options: ["object", "array", "null", "undefined"],
-        answer: "object"
     }
 ];
 
@@ -75,7 +50,6 @@ function showQuestion(questionIndex) {
         <div class="options"> ${options} </div>
     `;
     
-   // nextButton.style.display = 'none';
     nextButton.textContent = questionIndex === quizData.length - 1 ? 'Submit' : 'Next';
 }
 
@@ -108,13 +82,20 @@ function checkAnswer() {
 }
 
 function showResults() {
-    resultDetails.innerHTML = userAnswers.map(answer => `
-        <div class="${answer.userAnswer === answer.correctAnswer ? 'correct' : 'incorrect'}">
-            <p><strong>Question:</strong> ${answer.question}</p>
-            <p><strong>Your Answer:</strong> ${answer.userAnswer}</p>
-            <p><strong>Correct Answer:</strong> ${answer.correctAnswer}</p>
-        </div>
-    `).join('');
+    const totalQuestions = quizData.length;
+    const scorePercentage = (score / totalQuestions) * 100;
+    const passMessage = scorePercentage >= 35 ? 'Congratulations! You Passed!' : 'Sorry! You Failed.';
+
+    resultDetails.innerHTML = `
+        <h2 style="text-align: center; color: ${scorePercentage >= 35 ? 'green' : 'red'};">${passMessage}</h2>
+        ${userAnswers.map(answer => `
+            <div class="${answer.userAnswer === answer.correctAnswer ? 'correct' : 'incorrect'}">
+                <p><strong>Question:</strong> ${answer.question}</p>
+                <p><strong>Your Answer:</strong> ${answer.userAnswer}</p>
+                <p><strong>Correct Answer:</strong> ${answer.correctAnswer}</p>
+            </div>
+        `).join('')}
+    `;
 
     resultModal.style.display = 'block';
 }
